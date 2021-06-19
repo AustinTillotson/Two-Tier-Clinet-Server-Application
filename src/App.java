@@ -4,9 +4,6 @@ import java.awt.*;
 public class App extends JFrame {
 
     private JPanel DatabaseInfoPanel = new JPanel();
-    private JPanel CommandPanel = new JPanel();
-    private JPanel ConnectDBPanel = new JPanel();
-    private JPanel ResultPanel = new JPanel();
     private JLabel DatabaseInfoLabel = new JLabel("Enter Database Information");
     private JLabel DriverLabel = new JLabel("JDBC Driver");
     private JLabel DBLabel = new JLabel("Database URL");
@@ -19,6 +16,16 @@ public class App extends JFrame {
     private JTextField UsernameInput = new JTextField();
     private JPasswordField PasswordInput = new JPasswordField();
 
+    private JPanel CommandPanel = new JPanel();
+    private JLabel CommandLabel = new JLabel("Enter An SQL Command");
+    private JTextField CommandField = new JTextField();
+    private JButton CommandClearButton = new JButton("Clear SQL Command");
+    private JButton CommandExecuteButton = new JButton("Execute SQL Command");
+
+    private JPanel ConnectDBPanel = new JPanel();
+
+    private JPanel ResultPanel = new JPanel();
+
 
     public App() {
         super("Project 2 - SQL Client App - (AT - CNT 4714 - Summer 2021");
@@ -29,7 +36,7 @@ public class App extends JFrame {
         // Enter Database Information Panel
         add(DatabaseInfoPanel);
         DatabaseInfoPanel.setLayout(null);
-        DatabaseInfoPanel.setBounds(0 , 0, 340, 200);
+        DatabaseInfoPanel.setBounds(0 , 0, 330, 160);
         //DatabaseInfoPanel.setBackground(Color.BLUE);
         DatabaseInfoPanel.add(DatabaseInfoLabel);
         DatabaseInfoLabel.setBounds(5, 2, 200, 15);
@@ -62,19 +69,31 @@ public class App extends JFrame {
 
         // Enter An SQL Command Panel
         add(CommandPanel);
-        CommandPanel.setBounds(360, 0, 400, 200);
+        CommandPanel.setBounds(330, 0, 420, 160);
         //CommandPanel.setBackground(Color.RED);
         CommandPanel.setLayout(null);
+        CommandPanel.add(CommandLabel);
+        CommandLabel.setBounds(5, 2, 200, 15);
+        CommandLabel.setForeground(Color.blue);
+        CommandPanel.add(CommandField);
+        CommandField.setBounds(5, 17, 410, 110);
+        CommandPanel.add(CommandClearButton);
+        CommandClearButton.setBounds(30, 130, 170, 23);
+        CommandClearButton.setForeground(Color.red);
+        CommandClearButton.setBackground(Color.white);
+        CommandPanel.add(CommandExecuteButton);
+        CommandExecuteButton.setBounds(230, 130, 165, 23);
+        CommandExecuteButton.setBackground(Color.green);
 
         // Connect to Database Panel
         add(ConnectDBPanel);
-        ConnectDBPanel.setBounds(0, 200, 760, 40);
+        ConnectDBPanel.setBounds(0, 160, 750, 40);
         //ConnectDBPanel.setBackground(Color.black);
         ConnectDBPanel.setLayout(null);
 
         // SQL Execution Result Window Panel
         add(ResultPanel);
-        ResultPanel.setBounds(0, 240, 760, 240);
+        ResultPanel.setBounds(0, 200, 750, 240);
         //ResultPanel.setBackground(Color.CYAN);
         ResultPanel.setLayout(null);
 
