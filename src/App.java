@@ -18,19 +18,24 @@ public class App extends JFrame {
 
     private JPanel CommandPanel = new JPanel();
     private JLabel CommandLabel = new JLabel("Enter An SQL Command");
-    private JTextField CommandField = new JTextField();
+    private JTextArea CommandField = new JTextArea();
     private JButton CommandClearButton = new JButton("Clear SQL Command");
     private JButton CommandExecuteButton = new JButton("Execute SQL Command");
 
     private JPanel ConnectDBPanel = new JPanel();
+    private JButton DBConnectButton = new JButton("Connect to Database");
+    private JLabel ConnectionResultLabel = new JLabel("Connected to database url blah blah blah to do");
 
     private JPanel ResultPanel = new JPanel();
+    private JLabel ResultWindowLabel = new JLabel("SQL Execution Result Window");
+    private JTable ResultWindowDisplay = new JTable();
+    private JButton ResultClearButton = new JButton("Clear Result Window");
 
 
     public App() {
         super("Project 2 - SQL Client App - (AT - CNT 4714 - Summer 2021");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(1000, 500));
+        setSize(new Dimension(780, 500));
         setLayout(null);
 
         // Enter Database Information Panel
@@ -77,6 +82,7 @@ public class App extends JFrame {
         CommandLabel.setForeground(Color.blue);
         CommandPanel.add(CommandField);
         CommandField.setBounds(5, 17, 410, 110);
+        CommandField.setBorder(BorderFactory.createLineBorder(Color.black));
         CommandPanel.add(CommandClearButton);
         CommandClearButton.setBounds(30, 130, 170, 23);
         CommandClearButton.setForeground(Color.red);
@@ -90,12 +96,30 @@ public class App extends JFrame {
         ConnectDBPanel.setBounds(0, 160, 750, 40);
         //ConnectDBPanel.setBackground(Color.black);
         ConnectDBPanel.setLayout(null);
+        ConnectDBPanel.add(DBConnectButton);
+        DBConnectButton.setBounds(15, 5, 170, 23);
+        DBConnectButton.setForeground(Color.yellow);
+        DBConnectButton.setBackground(Color.blue);
+        ConnectDBPanel.add(ConnectionResultLabel);
+        ConnectionResultLabel.setBounds(200, 5, 545, 23);
+        ConnectionResultLabel.setForeground(Color.red);
+        ConnectionResultLabel.setOpaque(true);
+        ConnectionResultLabel.setBackground(Color.black);
 
         // SQL Execution Result Window Panel
         add(ResultPanel);
-        ResultPanel.setBounds(0, 200, 750, 240);
+        ResultPanel.setBounds(0, 200, 750, 260);
         //ResultPanel.setBackground(Color.CYAN);
         ResultPanel.setLayout(null);
+        ResultPanel.add(ResultWindowLabel);
+        ResultWindowLabel.setBounds(50, 5, 200, 15);
+        ResultWindowLabel.setForeground(Color.blue);
+        ResultPanel.add(ResultWindowDisplay);
+        ResultWindowDisplay.setBounds(50, 20, 690, 200);
+        ResultWindowDisplay.setBorder(BorderFactory.createLineBorder(Color.black));
+        ResultPanel.add(ResultClearButton);
+        ResultClearButton.setBounds(20, 228, 160, 23);
+        ResultClearButton.setBackground(Color.yellow);
 
 
         setVisible(true);
