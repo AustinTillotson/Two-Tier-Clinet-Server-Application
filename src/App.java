@@ -12,6 +12,12 @@ public class App extends JFrame {
     private JLabel DBLabel = new JLabel("Database URL");
     private JLabel UsernameLabel = new JLabel("Username");
     private JLabel PasswordLabel = new JLabel("Password");
+    private String[] Drivers = {"to do"};
+    private JComboBox DriverInput = new JComboBox(Drivers);
+    private String[] Databases = {"to do"};
+    private JComboBox DBInput = new JComboBox(Databases);
+    private JTextField UsernameInput = new JTextField();
+    private JPasswordField PasswordInput = new JPasswordField();
 
 
     public App() {
@@ -44,6 +50,15 @@ public class App extends JFrame {
         PasswordLabel.setBounds(5, 92, 105, 23);
         PasswordLabel.setOpaque(true);
         PasswordLabel.setBackground(Color.lightGray);
+        DatabaseInfoPanel.add(DriverInput);
+        DriverInput.setBounds(112, 17, 200, 20);
+        DatabaseInfoPanel.add(DBInput);
+        DBInput.setBounds(112, 42, 200, 20);
+        DatabaseInfoPanel.add(UsernameInput);
+        UsernameInput.setBounds(112, 67, 200, 20);
+        DatabaseInfoPanel.add(PasswordInput);
+        PasswordInput.setBounds(112, 92, 200, 20);
+        PasswordInput.setBackground(Color.white);
 
         // Enter An SQL Command Panel
         add(CommandPanel);
