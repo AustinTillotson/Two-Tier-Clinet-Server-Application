@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class App extends JFrame {
 
@@ -9,9 +11,9 @@ public class App extends JFrame {
     private JLabel DBLabel = new JLabel("Database URL");
     private JLabel UsernameLabel = new JLabel("Username");
     private JLabel PasswordLabel = new JLabel("Password");
-    private String[] Drivers = {"to do"};
+    private String[] Drivers = {"to do", "test1", "test2"};
     private JComboBox DriverInput = new JComboBox(Drivers);
-    private String[] Databases = {"to do"};
+    private String[] Databases = {"to do", "test1", "test2"};
     private JComboBox DBInput = new JComboBox(Databases);
     private JTextField UsernameInput = new JTextField();
     private JPasswordField PasswordInput = new JPasswordField();
@@ -31,6 +33,50 @@ public class App extends JFrame {
     private JTable ResultWindowDisplay = new JTable();
     private JButton ResultClearButton = new JButton("Clear Result Window");
 
+    private class ConnectToDatabaseListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String Driver = String.valueOf(DriverInput.getSelectedItem());
+            String Database = String.valueOf((DBInput.getSelectedItem()));
+            String Username = UsernameInput.getText();
+            String Password = PasswordInput.getText();
+            if(Username.length() == 0) {
+                //System.out.println("Username must be filled out\n");
+                ConnectionResultLabel.setText("Username must be filled out");
+            } else if(Password.length() == 0) {
+                //System.out.println("Password must be entered\n");
+                ConnectionResultLabel.setText("Password must be entered");
+            } else {
+                //System.out.printf("Driver: %s - Database: %s - Username: %s - Password: %s"
+                 //       , Driver, Database, Username, Password);
+                ConnectionResultLabel.setText("Input for connection is valid");
+            }
+        }
+    }
+
+    private class SQLCommandListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == CommandClearButton) {
+                CommandField.setText("");
+            } else if(e.getSource() == CommandExecuteButton) {
+                System.out.println("Executing " + CommandField.getText());
+            } else {
+                System.out.println("Error occurred");
+                CommandField.setText("Error occurred");
+            }
+        }
+    }
+
+    private class ClearTableListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("to do");
+        }
+    }
 
     public App() {
         super("Project 2 - SQL Client App - (AT - CNT 4714 - Summer 2021");
@@ -87,9 +133,11 @@ public class App extends JFrame {
         CommandClearButton.setBounds(30, 130, 170, 23);
         CommandClearButton.setForeground(Color.red);
         CommandClearButton.setBackground(Color.white);
+        CommandClearButton.addActionListener(new SQLCommandListener());
         CommandPanel.add(CommandExecuteButton);
         CommandExecuteButton.setBounds(230, 130, 165, 23);
         CommandExecuteButton.setBackground(Color.green);
+        CommandExecuteButton.addActionListener(new SQLCommandListener());
 
         // Connect to Database Panel
         add(ConnectDBPanel);
@@ -100,6 +148,7 @@ public class App extends JFrame {
         DBConnectButton.setBounds(15, 5, 170, 23);
         DBConnectButton.setForeground(Color.yellow);
         DBConnectButton.setBackground(Color.blue);
+        DBConnectButton.addActionListener(new ConnectToDatabaseListener());
         ConnectDBPanel.add(ConnectionResultLabel);
         ConnectionResultLabel.setBounds(200, 5, 545, 23);
         ConnectionResultLabel.setForeground(Color.red);
@@ -120,6 +169,7 @@ public class App extends JFrame {
         ResultPanel.add(ResultClearButton);
         ResultClearButton.setBounds(20, 228, 160, 23);
         ResultClearButton.setBackground(Color.yellow);
+        ResultClearButton.addActionListener(new ClearTableListener());
 
 
         setVisible(true);
