@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.*;
 
 public class App extends JFrame {
 
+    private ResultSetTableModel tableModel;
     private Connection connection;
     private boolean connectedToDatabase = false;
 
@@ -39,7 +41,8 @@ public class App extends JFrame {
 
     private JPanel ResultPanel = new JPanel();
     private JLabel ResultWindowLabel = new JLabel("SQL Execution Result Window");
-    private JTable ResultWindowDisplay = new JTable();
+    private JTable ResultWindowTable = new JTable();
+    private JScrollPane ResultWindowDisplay = new JScrollPane(ResultWindowTable);
     private JButton ResultClearButton = new JButton("Clear Result Window");
 
 
@@ -66,7 +69,8 @@ public class App extends JFrame {
                 //System.out.println("Password must be entered\n");
                 ConnectionResultLabel.setText("  Password must be entered");
             } else {
-                try {
+                try
+                {
                     dataSource = new MysqlDataSource();
                     dataSource.setURL(Database);
                     dataSource.setUser(Username);
@@ -75,15 +79,46 @@ public class App extends JFrame {
                     // connect to database
                     // establish connection to database
                     if(connectedToDatabase == true) {
-                        connection.close();
-                        ConnectionResultLabel.setText("  Connection was closed");
-                        connectedToDatabase = false;
+                        try
+                        {
+                            connection.close();
+                            ConnectionResultLabel.setText("  Connection was closed");
+                            connectedToDatabase = false;
+                        } catch (SQLException sqlException)
+                        {
+                            sqlException.printStackTrace();
+                        }
                     }
                     Connection connection = dataSource.getConnection();
 
                     // update database connection status
                     connectedToDatabase = true;
                     ConnectionResultLabel.setText("  Connected to " + Database);
+
+                    //**********************************************************************
+                    //  Create tableModel now that valid connection has been established
+                    //**********************************************************************
+
+                    try
+                    {
+                        tableModel = new ResultSetTableModel(connection, connectedToDatabase, CommandField.getText());
+                    } catch ( SQLException sqlException )
+                    {
+                        JOptionPane.showMessageDialog( null, sqlException.getMessage(),
+                                "Database error", JOptionPane.ERROR_MESSAGE );
+
+                        // ensure database connection is closed
+                        tableModel.disconnectFromDatabase();
+
+                        System.exit( 1 );   // terminate application
+                    } catch ( ClassNotFoundException classNotFound )
+                    {
+                        JOptionPane.showMessageDialog( null,
+                                "MySQL driver not found", "Driver not found",
+                                JOptionPane.ERROR_MESSAGE );
+
+                        System.exit( 1 ); // terminate application
+                    }
                 } //end try
                 catch ( SQLException sqlException )
                 {
@@ -109,6 +144,19 @@ public class App extends JFrame {
             // Execute
             else if(e.getSource() == CommandExecuteButton) {
                 System.out.println("Executing " + CommandField.getText());
+                try {
+                    tableModel.setQuery(CommandField.getText());
+                    ResultWindowTable.setModel(tableModel);
+                } catch (SQLException sqlException) {
+                    JOptionPane.showMessageDialog(null,
+                            sqlException.getMessage(), "Database error",
+                            JOptionPane.ERROR_MESSAGE);
+
+                    // ensure database connection is closed
+                    tableModel.disconnectFromDatabase();
+
+                    //System.exit(1); // terminate application
+                } // end inner catch
             }
             // Fail case
             else {
@@ -225,6 +273,10 @@ public class App extends JFrame {
         ResultPanel.add(ResultWindowDisplay);
         ResultWindowDisplay.setBounds(50, 20, 690, 200);
         ResultWindowDisplay.setBorder(BorderFactory.createLineBorder(Color.black));
+        //ResultPanel.add(ResultWindowTable);
+        //ResultWindowTable.setBounds(50, 20, 690, 200);
+        ResultWindowTable.setGridColor(Color.black);
+        //ResultWindowTable.setBorder(BorderFactory.createLineBorder(Color.black));
         ResultPanel.add(ResultClearButton);
         ResultClearButton.setBounds(20, 228, 160, 23);
         ResultClearButton.setBackground(Color.yellow);
@@ -233,6 +285,18 @@ public class App extends JFrame {
 
 
         setVisible(true);
+
+        // ensure database connection is closed when user quits application
+        addWindowListener(new WindowAdapter()
+                          {
+                              // disconnect from database and exit when window has closed
+                              public void windowClosed( WindowEvent event )
+                              {
+                                  tableModel.disconnectFromDatabase();
+                                  System.exit( 0 );
+                              } // end method windowClosed
+                          } // end WindowAdapter inner class
+        );
     }
 
     public static void main(String[] args) {
