@@ -11,9 +11,11 @@ public class App extends JFrame {
     private JLabel DBLabel = new JLabel("Database URL");
     private JLabel UsernameLabel = new JLabel("Username");
     private JLabel PasswordLabel = new JLabel("Password");
-    private String[] Drivers = {"to do", "test1", "test2"};
+    private String[] Drivers = {"to do"};
     private JComboBox DriverInput = new JComboBox(Drivers);
-    private String[] Databases = {"to do", "test1", "test2"};
+    private String[] Databases = {"jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
+            "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
+            "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC"};
     private JComboBox DBInput = new JComboBox(Databases);
     private JTextField UsernameInput = new JTextField();
     private JPasswordField PasswordInput = new JPasswordField();
