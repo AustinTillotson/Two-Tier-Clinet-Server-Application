@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.*;
+import java.util.Locale;
 
 public class App extends JFrame {
 
@@ -144,19 +145,44 @@ public class App extends JFrame {
             // Execute
             else if(e.getSource() == CommandExecuteButton) {
                 System.out.println("Executing " + CommandField.getText());
-                try {
-                    tableModel.setQuery(CommandField.getText());
-                    ResultWindowTable.setModel(tableModel);
-                } catch (SQLException sqlException) {
-                    JOptionPane.showMessageDialog(null,
-                            sqlException.getMessage(), "Database error",
-                            JOptionPane.ERROR_MESSAGE);
+                if(CommandField.getText().toLowerCase(Locale.ROOT).contains("select"))
+                {
+                    //*******************
+                    //   SELECT
+                    //*******************
+                    try {
+                        tableModel.setQuery(CommandField.getText());
+                        ResultWindowTable.setModel(tableModel);
+                    } catch (SQLException sqlException) {
+                        JOptionPane.showMessageDialog(null,
+                                sqlException.getMessage(), "Database error",
+                                JOptionPane.ERROR_MESSAGE);
 
-                    // ensure database connection is closed
-                    tableModel.disconnectFromDatabase();
+                        // ensure database connection is closed
+                        tableModel.disconnectFromDatabase();
 
-                    //System.exit(1); // terminate application
-                } // end inner catch
+                        //System.exit(1); // terminate application
+                    } // end inner catch
+                }
+                else
+                {
+                    //*******************
+                    //   UPDATE
+                    //*******************
+                    try {
+                        tableModel.setUpdate(CommandField.getText());
+                        ResultWindowTable.setModel(tableModel);
+                    } catch (SQLException sqlException) {
+                        JOptionPane.showMessageDialog(null,
+                                sqlException.getMessage(), "Database error",
+                                JOptionPane.ERROR_MESSAGE);
+
+                        // ensure database connection is closed
+                        tableModel.disconnectFromDatabase();
+
+                        //System.exit(1); // terminate application
+                    } // end inner catch
+                }
             }
             // Fail case
             else {
