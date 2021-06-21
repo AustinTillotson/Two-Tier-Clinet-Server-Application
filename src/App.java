@@ -23,7 +23,7 @@ public class App extends JFrame {
     private JLabel PasswordLabel = new JLabel("Password");
     private String[] Drivers = {"com.mysql.cj.jdbc.Driver"};
     private JComboBox DriverInput = new JComboBox(Drivers);
-    private String[] Databases = {"jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
+    private String[] Databases = {"jdbc:mysql://localhost:3306/project2?useTimezone=true&serverTimezone=UTC",
             "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
             "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC"};
     private JComboBox DBInput = new JComboBox(Databases);
@@ -144,7 +144,7 @@ public class App extends JFrame {
             }
             // Execute
             else if(e.getSource() == CommandExecuteButton) {
-                System.out.println("Executing " + CommandField.getText());
+                //System.out.println("Executing " + CommandField.getText());
                 if(CommandField.getText().toLowerCase(Locale.ROOT).contains("select"))
                 {
                     //*******************
