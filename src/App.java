@@ -28,7 +28,7 @@ public class App extends JFrame {
 
     private JPanel ConnectDBPanel = new JPanel();
     private JButton DBConnectButton = new JButton("Connect to Database");
-    private JLabel ConnectionResultLabel = new JLabel("Connected to database url blah blah blah to do");
+    private JLabel ConnectionResultLabel = new JLabel("  No Connection Now");
 
     private JPanel ResultPanel = new JPanel();
     private JLabel ResultWindowLabel = new JLabel("SQL Execution Result Window");
@@ -135,10 +135,12 @@ public class App extends JFrame {
         CommandClearButton.setBounds(30, 130, 170, 23);
         CommandClearButton.setForeground(Color.red);
         CommandClearButton.setBackground(Color.white);
+        CommandClearButton.setBorderPainted(false);
         CommandClearButton.addActionListener(new SQLCommandListener());
         CommandPanel.add(CommandExecuteButton);
         CommandExecuteButton.setBounds(230, 130, 165, 23);
         CommandExecuteButton.setBackground(Color.green);
+        CommandExecuteButton.setBorderPainted(false);
         CommandExecuteButton.addActionListener(new SQLCommandListener());
 
         // Connect to Database Panel
@@ -150,6 +152,7 @@ public class App extends JFrame {
         DBConnectButton.setBounds(15, 5, 170, 23);
         DBConnectButton.setForeground(Color.yellow);
         DBConnectButton.setBackground(Color.blue);
+        DBConnectButton.setBorderPainted(false);
         DBConnectButton.addActionListener(new ConnectToDatabaseListener());
         ConnectDBPanel.add(ConnectionResultLabel);
         ConnectionResultLabel.setBounds(200, 5, 545, 23);
@@ -171,6 +174,7 @@ public class App extends JFrame {
         ResultPanel.add(ResultClearButton);
         ResultClearButton.setBounds(20, 228, 160, 23);
         ResultClearButton.setBackground(Color.yellow);
+        ResultClearButton.setBorderPainted(false);
         ResultClearButton.addActionListener(new ClearTableListener());
 
 
