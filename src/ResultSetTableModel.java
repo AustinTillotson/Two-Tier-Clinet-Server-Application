@@ -28,28 +28,30 @@ public class ResultSetTableModel extends AbstractTableModel
    private int numberOfRows;
 
    // keep track of database connection status
-   private boolean connectedToDatabase = false;
+   private boolean connectedToDatabase;
    
    // constructor initializes resultSet and obtains its meta data object;
    // determines number of rows
-   public ResultSetTableModel( String query ) 
+   public ResultSetTableModel( Connection connection, boolean connectedToDatabase, String query )
       throws SQLException, ClassNotFoundException
-   {         
+   {
+       this.connection = connection;
+       this.connectedToDatabase = connectedToDatabase;
 	   Properties properties = new Properties();
 	   FileInputStream filein = null;
 	   MysqlDataSource dataSource = null;
        //read properties file
 	   try {
-	    	filein = new FileInputStream("db.properties");
-	    	properties.load(filein);
-	    	dataSource = new MysqlDataSource();
-	    	dataSource.setURL(properties.getProperty("MYSQL_DB_URL"));
-	    	dataSource.setUser(properties.getProperty("MYSQL_DB_USERNAME"));
-	    	dataSource.setPassword(properties.getProperty("MYSQL_DB_PASSWORD")); 	
+//	    	filein = new FileInputStream("db.properties");
+//	    	properties.load(filein);
+//	    	dataSource = new MysqlDataSource();
+//	    	dataSource.setURL(properties.getProperty("MYSQL_DB_URL"));
+//	    	dataSource.setUser(properties.getProperty("MYSQL_DB_USERNAME"));
+//	    	dataSource.setPassword(properties.getProperty("MYSQL_DB_PASSWORD"));
 	    
             // connect to database bikes and query database
   	        // establish connection to database
-   	        Connection connection = dataSource.getConnection();
+//   	        Connection connection = dataSource.getConnection();
 	
             // create Statement to query database
             statement = connection.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY );
@@ -58,7 +60,7 @@ public class ResultSetTableModel extends AbstractTableModel
             connectedToDatabase = true;
 
             // set query and execute it
-            setQuery( query );
+ //           setQuery( query );
 		
 		    //set update and execute it
 		    //setUpdate (query);
@@ -68,9 +70,9 @@ public class ResultSetTableModel extends AbstractTableModel
          sqlException.printStackTrace();
          System.exit( 1 );
       } // end catch
-      catch (IOException e) {
+  /*    catch (IOException e) {
    	     e.printStackTrace();
-      }  
+      }  */
    } // end constructor ResultSetTableModel
 
    // get class that represents column type
@@ -222,8 +224,8 @@ public class ResultSetTableModel extends AbstractTableModel
       // close Statement and Connection            
       else try                                          
       {                                            
-         statement.close();                        
-         connection.close();                       
+         statement.close();
+//         connection.close();
       } // end try                                 
       catch ( SQLException sqlException )          
       {                                            
@@ -231,7 +233,7 @@ public class ResultSetTableModel extends AbstractTableModel
       } // end catch                               
       finally  // update database connection status
       {                                            
-         connectedToDatabase = false;              
+//         connectedToDatabase = false;
       } // end finally                             
    } // end method disconnectFromDatabase          
 }  // end class ResultSetTableModel
