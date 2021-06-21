@@ -18,7 +18,7 @@ public class App extends JFrame {
     private JLabel DBLabel = new JLabel("Database URL");
     private JLabel UsernameLabel = new JLabel("Username");
     private JLabel PasswordLabel = new JLabel("Password");
-    private String[] Drivers = {"to do"};
+    private String[] Drivers = {"com.mysql.cj.jdbc.Driver"};
     private JComboBox DriverInput = new JComboBox(Drivers);
     private String[] Databases = {"jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
             "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
