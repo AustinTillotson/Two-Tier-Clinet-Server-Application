@@ -1,9 +1,16 @@
+import com.mysql.cj.jdbc.MysqlDataSource;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.*;
 
 public class App extends JFrame {
+
+    private Connection connection;
+    private boolean connectedToDatabase = false;
 
     private JPanel DatabaseInfoPanel = new JPanel();
     private JLabel DatabaseInfoLabel = new JLabel("Enter Database Information");
@@ -35,42 +42,85 @@ public class App extends JFrame {
     private JTable ResultWindowDisplay = new JTable();
     private JButton ResultClearButton = new JButton("Clear Result Window");
 
-    private class ConnectToDatabaseListener implements ActionListener {
 
+    /****************************************************
+     Action Listeners
+     ****************************************************/
+
+    /*****************************************************
+     "Connect" Button
+     ****************************************************/
+
+    private class ConnectToDatabaseListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String Driver = String.valueOf(DriverInput.getSelectedItem());
             String Database = String.valueOf((DBInput.getSelectedItem()));
             String Username = UsernameInput.getText();
             String Password = PasswordInput.getText();
+            MysqlDataSource dataSource = null;
             if(Username.length() == 0) {
                 //System.out.println("Username must be filled out\n");
-                ConnectionResultLabel.setText("Username must be filled out");
+                ConnectionResultLabel.setText("  Username must be filled out");
             } else if(Password.length() == 0) {
                 //System.out.println("Password must be entered\n");
-                ConnectionResultLabel.setText("Password must be entered");
+                ConnectionResultLabel.setText("  Password must be entered");
             } else {
-                //System.out.printf("Driver: %s - Database: %s - Username: %s - Password: %s"
-                 //       , Driver, Database, Username, Password);
-                ConnectionResultLabel.setText("Input for connection is valid");
+                try {
+                    dataSource = new MysqlDataSource();
+                    dataSource.setURL(Database);
+                    dataSource.setUser(Username);
+                    dataSource.setPassword(Password);
+
+                    // connect to database
+                    // establish connection to database
+                    if(connectedToDatabase == true) {
+                        connection.close();
+                        ConnectionResultLabel.setText("  Connection was closed");
+                        connectedToDatabase = false;
+                    }
+                    Connection connection = dataSource.getConnection();
+
+                    // update database connection status
+                    connectedToDatabase = true;
+                    ConnectionResultLabel.setText("  Connected to " + Database);
+                } //end try
+                catch ( SQLException sqlException )
+                {
+                    sqlException.printStackTrace();
+                    ConnectionResultLabel.setText(("  Invalid user"));
+                } // end catch
             }
         }
     }
+
+    /*****************************************************
+     "Clear / Execute SQL Command" Button
+     ****************************************************/
 
     private class SQLCommandListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Clear
             if(e.getSource() == CommandClearButton) {
                 CommandField.setText("");
-            } else if(e.getSource() == CommandExecuteButton) {
+            }
+            // Execute
+            else if(e.getSource() == CommandExecuteButton) {
                 System.out.println("Executing " + CommandField.getText());
-            } else {
+            }
+            // Fail case
+            else {
                 System.out.println("Error occurred");
                 CommandField.setText("Error occurred");
             }
         }
     }
+
+    /*****************************************************
+     "Clear Result Window" Button
+     ****************************************************/
 
     private class ClearTableListener implements ActionListener {
 
@@ -79,6 +129,10 @@ public class App extends JFrame {
             System.out.println("to do");
         }
     }
+
+    /*****************************************************
+     Application GUI
+     ****************************************************/
 
     public App() {
         super("Project 2 - SQL Client App - (AT - CNT 4714 - Summer 2021");
