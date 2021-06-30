@@ -69,7 +69,21 @@ public class App extends JFrame {
             } else if(Password.length() == 0) {
                 //System.out.println("Password must be entered\n");
                 ConnectionResultLabel.setText("  Password must be entered");
-            } else {
+            } else if(connectedToDatabase == true) {
+                    /*    try
+                        {
+                            connection.close();
+                            ConnectionResultLabel.setText("  Connection was closed");
+                            connectedToDatabase = false;
+                        } catch (SQLException sqlException)
+                        {
+                            sqlException.printStackTrace();
+                        }*/
+                JOptionPane.showMessageDialog(null,
+                        "Cannot make new connection when a connection has been established. " +
+                                "Please restart application to make a new connection.");
+            }
+            else {
                 try
                 {
                     dataSource = new MysqlDataSource();
@@ -79,17 +93,7 @@ public class App extends JFrame {
 
                     // connect to database
                     // establish connection to database
-                    if(connectedToDatabase == true) {
-                        try
-                        {
-                            connection.close();
-                            ConnectionResultLabel.setText("  Connection was closed");
-                            connectedToDatabase = false;
-                        } catch (SQLException sqlException)
-                        {
-                            sqlException.printStackTrace();
-                        }
-                    }
+
                     Connection connection = dataSource.getConnection();
 
                     // update database connection status
@@ -109,9 +113,9 @@ public class App extends JFrame {
                                 "Database error", JOptionPane.ERROR_MESSAGE );
 
                         // ensure database connection is closed
-                        tableModel.disconnectFromDatabase();
+                        //tableModel.disconnectFromDatabase();
 
-                        System.exit( 1 );   // terminate application
+                        //System.exit( 1 );   // terminate application
                     } catch ( ClassNotFoundException classNotFound )
                     {
                         JOptionPane.showMessageDialog( null,
@@ -159,7 +163,7 @@ public class App extends JFrame {
                                 JOptionPane.ERROR_MESSAGE);
 
                         // ensure database connection is closed
-                        tableModel.disconnectFromDatabase();
+                        //tableModel.disconnectFromDatabase();
 
                         //System.exit(1); // terminate application
                     } // end inner catch
@@ -178,7 +182,7 @@ public class App extends JFrame {
                                 JOptionPane.ERROR_MESSAGE);
 
                         // ensure database connection is closed
-                        tableModel.disconnectFromDatabase();
+                        //tableModel.disconnectFromDatabase();
 
                         //System.exit(1); // terminate application
                     } // end inner catch

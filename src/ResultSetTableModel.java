@@ -217,7 +217,7 @@ public class ResultSetTableModel extends AbstractTableModel
    } // end method setUpdate
 
    // close Statement and Connection               
-   public void disconnectFromDatabase()            
+   public void disconnectFromDatabase()
    {              
       if ( !connectedToDatabase )                  
          return;
@@ -235,7 +235,7 @@ public class ResultSetTableModel extends AbstractTableModel
       {                                            
 //         connectedToDatabase = false;
       } // end finally                             
-   } // end method disconnectFromDatabase          
+   } // end method disconnectFromDatabase
 }  // end class ResultSetTableModel
 
 
