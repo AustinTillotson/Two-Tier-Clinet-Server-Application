@@ -1,6 +1,8 @@
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +35,7 @@ public class App extends JFrame {
     private JPanel CommandPanel = new JPanel();
     private JLabel CommandLabel = new JLabel("Enter An SQL Command");
     private JTextArea CommandField = new JTextArea();
-    private JScrollPane CommandFieldDisplay = new JScrollPane(CommandField); 
+    private JScrollPane CommandFieldDisplay = new JScrollPane(CommandField);
     private JButton CommandClearButton = new JButton("Clear SQL Command");
     private JButton CommandExecuteButton = new JButton("Execute SQL Command");
 
@@ -44,6 +46,7 @@ public class App extends JFrame {
     private JPanel ResultPanel = new JPanel();
     private JLabel ResultWindowLabel = new JLabel("SQL Execution Result Window");
     private JTable ResultWindowTable = new JTable();
+    private TableModel Empty = new DefaultTableModel();
     private JScrollPane ResultWindowDisplay = new JScrollPane(ResultWindowTable);
     private JButton ResultClearButton = new JButton("Clear Result Window");
 
@@ -205,7 +208,7 @@ public class App extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("to do");
+            ResultWindowTable.setModel(Empty);
         }
     }
 
