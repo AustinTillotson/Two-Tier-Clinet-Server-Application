@@ -182,6 +182,35 @@ public class ResultSetTableModel extends AbstractTableModel
       // specify query and execute it
       resultSet = statement.executeQuery( query );
 
+      // add query to operationslog
+      Properties properties = new Properties();
+      FileInputStream file = null;
+      MysqlDataSource dataSource = null;
+      try
+      {
+         file = new FileInputStream("oplog.properties");
+         properties.load(file);
+         dataSource = new MysqlDataSource();
+         dataSource.setURL(properties.getProperty("MYSQL_DB_URL"));
+         dataSource.setUser(properties.getProperty("MYSQL_DB_USERNAME"));
+         dataSource.setPassword(properties.getProperty("MYSQL_DB_PASSWORD"));
+
+         // connect to operationslog database
+         Connection operationsConnection = dataSource.getConnection();
+
+         Statement operation = operationsConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+         operation.executeUpdate("SET SQL_SAFE_UPDATES = 0;");
+         operation.executeUpdate("update operationscount set num_queries = num_queries+1;");
+
+         // close operationslog statement and connection
+         operation.close();
+         operationsConnection.close();
+      } catch (SQLException sqlException){
+         sqlException.printStackTrace();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
       // obtain meta data for ResultSet
       metaData = resultSet.getMetaData();
 
@@ -205,6 +234,35 @@ public class ResultSetTableModel extends AbstractTableModel
 
       // specify query and execute it
       res = statement.executeUpdate( query );
+
+      // add query to operationslog
+      Properties properties = new Properties();
+      FileInputStream file = null;
+      MysqlDataSource dataSource = null;
+      try
+      {
+         file = new FileInputStream("oplog.properties");
+         properties.load(file);
+         dataSource = new MysqlDataSource();
+         dataSource.setURL(properties.getProperty("MYSQL_DB_URL"));
+         dataSource.setUser(properties.getProperty("MYSQL_DB_USERNAME"));
+         dataSource.setPassword(properties.getProperty("MYSQL_DB_PASSWORD"));
+
+         // connect to operationslog database
+         Connection operationsConnection = dataSource.getConnection();
+
+         Statement operation = operationsConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+         operation.executeUpdate("SET SQL_SAFE_UPDATES = 0;");
+         operation.executeUpdate("update operationscount set num_updates = num_updates+1;");
+
+         // close operationslog statement and connection
+         operation.close();
+         operationsConnection.close();
+      } catch (SQLException sqlException){
+         sqlException.printStackTrace();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
 /*
       // obtain meta data for ResultSet
       metaData = resultSet.getMetaData();
