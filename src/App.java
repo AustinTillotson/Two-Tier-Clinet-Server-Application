@@ -33,6 +33,7 @@ public class App extends JFrame {
     private JPanel CommandPanel = new JPanel();
     private JLabel CommandLabel = new JLabel("Enter An SQL Command");
     private JTextArea CommandField = new JTextArea();
+    private JScrollPane CommandFieldDisplay = new JScrollPane(CommandField); 
     private JButton CommandClearButton = new JButton("Clear SQL Command");
     private JButton CommandExecuteButton = new JButton("Execute SQL Command");
 
@@ -260,9 +261,9 @@ public class App extends JFrame {
         CommandPanel.add(CommandLabel);
         CommandLabel.setBounds(5, 2, 200, 15);
         CommandLabel.setForeground(Color.blue);
-        CommandPanel.add(CommandField);
-        CommandField.setBounds(5, 17, 410, 110);
-        CommandField.setBorder(BorderFactory.createLineBorder(Color.black));
+        CommandPanel.add(CommandFieldDisplay);
+        CommandFieldDisplay.setBounds(5, 17, 410, 110);
+        CommandFieldDisplay.setBorder(BorderFactory.createLineBorder(Color.black));
         CommandPanel.add(CommandClearButton);
         CommandClearButton.setBounds(30, 130, 170, 23);
         CommandClearButton.setForeground(Color.red);
