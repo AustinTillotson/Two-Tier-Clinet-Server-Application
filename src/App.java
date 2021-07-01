@@ -50,6 +50,18 @@ public class App extends JFrame {
     private JScrollPane ResultWindowDisplay = new JScrollPane(ResultWindowTable);
     private JButton ResultClearButton = new JButton("Clear Result Window");
 
+    public static void centerFrame(JFrame frame) {
+        // Get size of screen
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        // Determine cords to center main frame
+        int width = frame.getSize().width;
+        int height = frame.getSize().height;
+        int x = (dim.width - width) / 2;
+        int y = (dim.height - height) / 2;
+
+        frame.setLocation(x, y);
+    }
+
 
     /****************************************************
      Action Listeners
@@ -221,6 +233,7 @@ public class App extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(new Dimension(780, 500));
         setLayout(null);
+        centerFrame(this);
 
         // Enter Database Information Panel
         add(DatabaseInfoPanel);
