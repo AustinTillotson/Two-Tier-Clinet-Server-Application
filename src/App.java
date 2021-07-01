@@ -110,7 +110,7 @@ public class App extends JFrame {
                     // connect to database
                     // establish connection to database
 
-                    Connection connection = dataSource.getConnection();
+                    connection = dataSource.getConnection();
 
                     // update database connection status
                     connectedToDatabase = true;
