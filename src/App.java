@@ -1,4 +1,4 @@
-import com.mysql.cj.jdbc.MysqlDataSource;
+//import com.mysql.cj.jdbc.MysqlDataSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,38 +17,38 @@ public class App extends JFrame {
     private Connection connection;
     private boolean connectedToDatabase = false;
 
-    private JPanel DatabaseInfoPanel = new JPanel();
-    private JLabel DatabaseInfoLabel = new JLabel("Enter Database Information");
-    private JLabel DriverLabel = new JLabel("JDBC Driver");
-    private JLabel DBLabel = new JLabel("Database URL");
-    private JLabel UsernameLabel = new JLabel("Username");
-    private JLabel PasswordLabel = new JLabel("Password");
-    private String[] Drivers = {"com.mysql.cj.jdbc.Driver"};
-    private JComboBox DriverInput = new JComboBox(Drivers);
-    private String[] Databases = {"jdbc:mysql://localhost:3306/project2?useTimezone=true&serverTimezone=UTC",
+    private final JPanel DatabaseInfoPanel = new JPanel();
+    private final JLabel DatabaseInfoLabel = new JLabel("Enter Database Information");
+    private final JLabel DriverLabel = new JLabel("JDBC Driver");
+    private final JLabel DBLabel = new JLabel("Database URL");
+    private final JLabel UsernameLabel = new JLabel("Username");
+    private final JLabel PasswordLabel = new JLabel("Password");
+    private final String[] Drivers = {"com.mysql.cj.jdbc.Driver"};
+    private final JComboBox DriverInput = new JComboBox(Drivers);
+    private final String[] Databases = {"jdbc:mysql://localhost:3306/project2?useTimezone=true&serverTimezone=UTC",
             "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC",
             "jdbc:mysql://localhost:3306/bikedb?useTimezone=true&serverTimezone=UTC"};
-    private JComboBox DBInput = new JComboBox(Databases);
-    private JTextField UsernameInput = new JTextField();
-    private JPasswordField PasswordInput = new JPasswordField();
+    private final JComboBox DBInput = new JComboBox(Databases);
+    private final JTextField UsernameInput = new JTextField();
+    private final JPasswordField PasswordInput = new JPasswordField();
 
-    private JPanel CommandPanel = new JPanel();
-    private JLabel CommandLabel = new JLabel("Enter An SQL Command");
-    private JTextArea CommandField = new JTextArea();
-    private JScrollPane CommandFieldDisplay = new JScrollPane(CommandField);
-    private JButton CommandClearButton = new JButton("Clear SQL Command");
-    private JButton CommandExecuteButton = new JButton("Execute SQL Command");
+    private final JPanel CommandPanel = new JPanel();
+    private final JLabel CommandLabel = new JLabel("Enter An SQL Command");
+    private final JTextArea CommandField = new JTextArea();
+    private final JScrollPane CommandFieldDisplay = new JScrollPane(CommandField);
+    private final JButton CommandClearButton = new JButton("Clear SQL Command");
+    private final JButton CommandExecuteButton = new JButton("Execute SQL Command");
 
-    private JPanel ConnectDBPanel = new JPanel();
-    private JButton DBConnectButton = new JButton("Connect to Database");
-    private JLabel ConnectionResultLabel = new JLabel("  No Connection Now");
+    private final JPanel ConnectDBPanel = new JPanel();
+    private final JButton DBConnectButton = new JButton("Connect to Database");
+    private final JLabel ConnectionResultLabel = new JLabel("  No Connection Now");
 
-    private JPanel ResultPanel = new JPanel();
-    private JLabel ResultWindowLabel = new JLabel("SQL Execution Result Window");
-    private JTable ResultWindowTable = new JTable();
-    private TableModel Empty = new DefaultTableModel();
-    private JScrollPane ResultWindowDisplay = new JScrollPane(ResultWindowTable);
-    private JButton ResultClearButton = new JButton("Clear Result Window");
+    private final JPanel ResultPanel = new JPanel();
+    private final JLabel ResultWindowLabel = new JLabel("SQL Execution Result Window");
+    private final JTable ResultWindowTable = new JTable();
+    private final TableModel Empty = new DefaultTableModel();
+    private final JScrollPane ResultWindowDisplay = new JScrollPane(ResultWindowTable);
+    private final JButton ResultClearButton = new JButton("Clear Result Window");
 
     public static void centerFrame(JFrame frame) {
         // Get size of screen
@@ -78,7 +78,7 @@ public class App extends JFrame {
             String Database = String.valueOf((DBInput.getSelectedItem()));
             String Username = UsernameInput.getText();
             String Password = PasswordInput.getText();
-            MysqlDataSource dataSource = null;
+            //MysqlDataSource dataSource = null; editted
             if(Username.length() == 0) {
                 //System.out.println("Username must be filled out\n");
                 ConnectionResultLabel.setText("  Username must be filled out");
@@ -102,15 +102,17 @@ public class App extends JFrame {
             else {
                 try
                 {
-                    dataSource = new MysqlDataSource();
+                    Class.forName(Driver);
+                    connection = DriverManager.getConnection(Database, Username, Password);
+                   /* dataSource = new MysqlDataSource();
                     dataSource.setURL(Database);
                     dataSource.setUser(Username);
-                    dataSource.setPassword(Password);
+                    dataSource.setPassword(Password);  editted*/
 
                     // connect to database
                     // establish connection to database
 
-                    connection = dataSource.getConnection();
+                    //connection = dataSource.getConnection();  editted
 
                     // update database connection status
                     connectedToDatabase = true;
@@ -141,6 +143,11 @@ public class App extends JFrame {
                         System.exit( 1 ); // terminate application
                     }
                 } //end try
+                catch ( ClassNotFoundException classNotFoundException)
+                {
+                    classNotFoundException.printStackTrace();
+                    ConnectionResultLabel.setText("   Driver not found");
+                }
                 catch ( SQLException sqlException )
                 {
                     sqlException.printStackTrace();
@@ -191,7 +198,7 @@ public class App extends JFrame {
                     //*******************
                     try {
                         tableModel.setUpdate(CommandField.getText());
-                        ResultWindowTable.setModel(tableModel);
+                        ResultWindowTable.setModel(Empty);
                     } catch (SQLException sqlException) {
                         JOptionPane.showMessageDialog(null,
                                 sqlException.getMessage(), "Database error",
