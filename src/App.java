@@ -1,5 +1,3 @@
-//import com.mysql.cj.jdbc.MysqlDataSource;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -78,23 +76,11 @@ public class App extends JFrame {
             String Database = String.valueOf((DBInput.getSelectedItem()));
             String Username = UsernameInput.getText();
             String Password = PasswordInput.getText();
-            //MysqlDataSource dataSource = null; editted
             if(Username.length() == 0) {
-                //System.out.println("Username must be filled out\n");
                 ConnectionResultLabel.setText("  Username must be filled out");
             } else if(Password.length() == 0) {
-                //System.out.println("Password must be entered\n");
                 ConnectionResultLabel.setText("  Password must be entered");
             } else if(connectedToDatabase == true) {
-                    /*    try
-                        {
-                            connection.close();
-                            ConnectionResultLabel.setText("  Connection was closed");
-                            connectedToDatabase = false;
-                        } catch (SQLException sqlException)
-                        {
-                            sqlException.printStackTrace();
-                        }*/
                 JOptionPane.showMessageDialog(null,
                         "Cannot make new connection when a connection has been established. " +
                                 "Please restart application to make a new connection.");
@@ -102,17 +88,11 @@ public class App extends JFrame {
             else {
                 try
                 {
+                    // Load selected Driver
                     Class.forName(Driver);
-                    connection = DriverManager.getConnection(Database, Username, Password);
-                   /* dataSource = new MysqlDataSource();
-                    dataSource.setURL(Database);
-                    dataSource.setUser(Username);
-                    dataSource.setPassword(Password);  editted*/
 
                     // connect to database
-                    // establish connection to database
-
-                    //connection = dataSource.getConnection();  editted
+                    connection = DriverManager.getConnection(Database, Username, Password);
 
                     // update database connection status
                     connectedToDatabase = true;
@@ -129,11 +109,6 @@ public class App extends JFrame {
                     {
                         JOptionPane.showMessageDialog( null, sqlException.getMessage(),
                                 "Database error", JOptionPane.ERROR_MESSAGE );
-
-                        // ensure database connection is closed
-                        //tableModel.disconnectFromDatabase();
-
-                        //System.exit( 1 );   // terminate application
                     } catch ( ClassNotFoundException classNotFound )
                     {
                         JOptionPane.showMessageDialog( null,
@@ -171,7 +146,6 @@ public class App extends JFrame {
             }
             // Execute
             else if(e.getSource() == CommandExecuteButton) {
-                //System.out.println("Executing " + CommandField.getText());
                 if(CommandField.getText().toLowerCase(Locale.ROOT).contains("select"))
                 {
                     //*******************
@@ -184,11 +158,6 @@ public class App extends JFrame {
                         JOptionPane.showMessageDialog(null,
                                 sqlException.getMessage(), "Database error",
                                 JOptionPane.ERROR_MESSAGE);
-
-                        // ensure database connection is closed
-                        //tableModel.disconnectFromDatabase();
-
-                        //System.exit(1); // terminate application
                     } // end inner catch
                 }
                 else
@@ -203,11 +172,6 @@ public class App extends JFrame {
                         JOptionPane.showMessageDialog(null,
                                 sqlException.getMessage(), "Database error",
                                 JOptionPane.ERROR_MESSAGE);
-
-                        // ensure database connection is closed
-                        //tableModel.disconnectFromDatabase();
-
-                        //System.exit(1); // terminate application
                     } // end inner catch
                 }
             }
@@ -246,7 +210,6 @@ public class App extends JFrame {
         add(DatabaseInfoPanel);
         DatabaseInfoPanel.setLayout(null);
         DatabaseInfoPanel.setBounds(0 , 0, 330, 160);
-        //DatabaseInfoPanel.setBackground(Color.BLUE);
         DatabaseInfoPanel.add(DatabaseInfoLabel);
         DatabaseInfoLabel.setBounds(5, 2, 200, 15);
         DatabaseInfoLabel.setForeground(Color.blue);
@@ -279,7 +242,6 @@ public class App extends JFrame {
         // Enter An SQL Command Panel
         add(CommandPanel);
         CommandPanel.setBounds(330, 0, 420, 160);
-        //CommandPanel.setBackground(Color.RED);
         CommandPanel.setLayout(null);
         CommandPanel.add(CommandLabel);
         CommandLabel.setBounds(5, 2, 200, 15);
@@ -302,7 +264,6 @@ public class App extends JFrame {
         // Connect to Database Panel
         add(ConnectDBPanel);
         ConnectDBPanel.setBounds(0, 160, 750, 40);
-        //ConnectDBPanel.setBackground(Color.black);
         ConnectDBPanel.setLayout(null);
         ConnectDBPanel.add(DBConnectButton);
         DBConnectButton.setBounds(15, 5, 170, 23);
@@ -319,7 +280,6 @@ public class App extends JFrame {
         // SQL Execution Result Window Panel
         add(ResultPanel);
         ResultPanel.setBounds(0, 200, 750, 260);
-        //ResultPanel.setBackground(Color.CYAN);
         ResultPanel.setLayout(null);
         ResultPanel.add(ResultWindowLabel);
         ResultWindowLabel.setBounds(50, 5, 200, 15);
@@ -327,10 +287,7 @@ public class App extends JFrame {
         ResultPanel.add(ResultWindowDisplay);
         ResultWindowDisplay.setBounds(50, 20, 690, 200);
         ResultWindowDisplay.setBorder(BorderFactory.createLineBorder(Color.black));
-        //ResultPanel.add(ResultWindowTable);
-        //ResultWindowTable.setBounds(50, 20, 690, 200);
         ResultWindowTable.setGridColor(Color.black);
-        //ResultWindowTable.setBorder(BorderFactory.createLineBorder(Color.black));
         ResultPanel.add(ResultClearButton);
         ResultClearButton.setBounds(20, 228, 160, 23);
         ResultClearButton.setBackground(Color.yellow);
